@@ -12,7 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Responsive dashboard and navigation layout
 - Add and view **Incomes**, **Expenses**, and **Transactions**
 - Stylized UI with card-based design, clean spacing, and hover effects
-- Connected to a Django-based backend API
+- Connected to a Spring Boot-based backend API built with Java.
 
 ---
 
