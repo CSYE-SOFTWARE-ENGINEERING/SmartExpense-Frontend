@@ -1,74 +1,72 @@
 
-# SmartExpense-Frontend
+# SmartExpense Frontend
 
-# Getting Started with Create React App
+This is the frontend part of the **SmartExpense** application — a personal finance tracker built to manage incomes, expenses, and transactions with a clean and intuitive interface.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- Responsive dashboard and navigation layout
+- Add and view **Incomes**, **Expenses**, and **Transactions**
+- Stylized UI with card-based design, clean spacing, and hover effects
+- Connected to a Django-based backend API
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Tech Stack
 
-### `npm test`
+- **React** (via Vite)
+- **Axios** – for making HTTP requests
+- **CSS Modules** (individual `.css` files per page)
+- **React Router DOM** – for multi-page routing
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## ▶️ Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Install dependencies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Start the development server
 
-### `npm run eject`
+npm run dev
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Then visit: http://localhost:5173
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+🔌 Backend Integration
+Ensure the backend server is running (Django API):
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Base URL: http://localhost:8080/api
 
-## Learn More
+Endpoints used:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+GET /api/income, POST /api/income, DELETE /api/income/:id
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+GET /api/expense, POST /api/expense, DELETE /api/expense/:id
 
-### Code Splitting
+GET /api/transaction
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+⚠️ If CORS issues occur, make sure the backend enables cross-origin requests.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+📷 Pages
+Dashboard – Overview of income/expense stats (optional)
 
-### Making a Progressive Web App
+Incomes – Add and view income records
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Expenses – Add and view expense records
 
-### Advanced Configuration
+Transactions – View all records in a unified list
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📝 License
 
-### Deployment
+This project is intended for academic, demonstration, and educational purposes only.  
+Commercial use, distribution, or deployment in production environments is **not permitted** without prior permission from the authors or instructors.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
+Copyright © 2025 SmartExpense Team
