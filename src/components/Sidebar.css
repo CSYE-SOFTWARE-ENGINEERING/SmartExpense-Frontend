@@ -1,0 +1,33 @@
+
+.sidebar {
+  width: 220px;
+  background: #1c1c2e;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.profile {
+  text-align: center;
+}
+.profile img {
+  width: 80px;
+  border-radius: 50%;
+}
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+nav ul li {
+  margin: 20px 0;
+}
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+.signout {
+  margin-top: auto;
+  color: #ccc;
+  cursor: pointer;
+}

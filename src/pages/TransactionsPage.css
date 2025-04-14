@@ -1,0 +1,38 @@
+.transactions-page {
+    padding: 30px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2d4059;
+  }
+  
+  .transactions-section {
+    background: #f7fafd;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    min-height: 300px;
+  }
+  
+  .empty-note {
+    font-style: italic;
+    color: #888;
+  }
+  
+  .item-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .note-text {
+    margin-top: 4px;
+    color: #444;
+    font-size: 14px;
+  }
+  
