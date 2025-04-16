@@ -1,31 +1,104 @@
-
-.dashboard {
+.dashboard-page {
   padding: 30px;
-  flex-grow: 1;
+  max-width: none;
+  width: 100%;        
+  box-sizing: border-box;
 }
-.chart {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
+
+
+.dashboard-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2d4059;
+  margin-bottom: 25px;
 }
-.summary {
+
+/* 第一行卡片区域 */
+
+.summary-cards {
   display: flex;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 24px;
+  margin-bottom: 30px;
 }
+
 .card {
   flex: 1;
-  background: #fff;
-  border-radius: 10px;
+  min-width: 0; 
+  background: #ffffff;
+  border-radius: 12px;
   padding: 20px;
+  min-height: 100px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
-.card.income b {
-  color: green;
+
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
 }
-.card.expense b {
-  color: red;
+
+.card p {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
 }
-.card.balance b {
-  color: #24b024;
+
+.income-card p {
+  color: #4caf50;
+}
+
+.expense-card p {
+  color: #e53935;
+}
+
+.balance-card p {
+  color: #1e88e5;
+}
+
+/* 第二行图表 + 最近交易（两列） */
+.dashboard-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px; /* ✅ 加大间距以拉开两块区域，填满右边 */
+  align-items: stretch;
+  width: 100%;
+}
+
+/* 左侧图表区域 */
+.chart-placeholder {
+  background: #f7fafd;
+  padding: 20px;
+  border-radius: 12px;
+  min-height: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* 右侧最近交易 */
+.recent-transactions {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  min-height: 300px;
+  height: 90%;
+}
+
+.recent-transactions h3 {
+  margin-bottom: 10px;
+}
+
+.recent-transactions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-transactions li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #444;
 }
