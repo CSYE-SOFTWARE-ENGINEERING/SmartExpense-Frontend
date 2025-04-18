@@ -7,9 +7,42 @@ const COLORS = ['#e53935', '#ef5350', '#f44336', '#ffcdd2', '#b71c1c', '#ff8a80'
 
 export default function ExpensesPage() {
   const [expenses, setExpenses] = useState([]);
+  const [wallets, setWallets] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [total, setTotal] = useState(0);
   const [categoryData, setCategoryData] = useState([]);
-  const [form, setForm] = useState({ title: '', amount: '', date: '', category: '', note: '' });
+  const [form, setForm] = useState({ 
+    title: '', 
+    amount: '', 
+    date: '', 
+    category: '', 
+    note: '',
+    walletId: ''
+  });
+
+  useEffect(() => {
+    fetchExpenses();
+    fetchWallets();
+    fetchCategories();
+  }, []);
+
+  const fetchWallets = async () => {
+    try {
+      const res = await axios.get('/wallets');
+      setWallets(res.data || []);
+    } catch (error) {
+      console.error('Failed to fetch wallets:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('/categories');
+      setCategories(res.data || []);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
 
   const fetchExpenses = async () => {
     try {
@@ -40,9 +73,52 @@ export default function ExpensesPage() {
     }
   };
 
-  useEffect(() => {
-    fetchExpenses();
-  }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (!form.title || !form.amount || !form.date || !form.walletId) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
+      // Get category ID from selection
+      let categoryId = null;
+      if (form.category) {
+        const selectedCategory = categories.find(c => c.name === form.category);
+        if (selectedCategory) {
+          categoryId = selectedCategory.id;
+        }
+      }
+      
+      const expenseData = {
+        amount: parseFloat(form.amount),
+        description: form.title,
+        date: form.date,
+        type: 'EXPENSE',
+        walletId: form.walletId,
+        categoryId: categoryId
+      };
+      
+      await axios.post('/transactions', expenseData);
+      
+      // Reset form and refresh
+      setForm({ 
+        title: '', 
+        amount: '', 
+        date: '', 
+        category: '', 
+        note: '',
+        walletId: '' 
+      });
+      
+      fetchExpenses();
+      
+    } catch (error) {
+      console.error('Error adding expense:', error);
+      alert('Failed to add expense. Please try again.');
+    }
+  };
 
   return (
     <div className="expenses-page">
@@ -52,12 +128,54 @@ export default function ExpensesPage() {
 
       <div className="expense-chart-form-wrapper">
         <div className="expense-form">
-          <input type="text" placeholder="Expense Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
-          <input type="number" placeholder="Expense Amount" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} />
-          <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
-          <input type="text" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
-          <textarea placeholder="Add A Reference" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })}></textarea>
-          <button disabled>+ Add Expense</button>
+          <input 
+            type="text" 
+            placeholder="Expense Title" 
+            value={form.title} 
+            onChange={e => setForm({ ...form, title: e.target.value })} 
+            required
+          />
+          <input 
+            type="number" 
+            placeholder="Expense Amount" 
+            value={form.amount} 
+            onChange={e => setForm({ ...form, amount: e.target.value })} 
+            required
+          />
+          <input 
+            type="date" 
+            value={form.date} 
+            onChange={e => setForm({ ...form, date: e.target.value })} 
+            required
+          />
+          <select 
+            value={form.walletId} 
+            onChange={e => setForm({ ...form, walletId: e.target.value })} 
+            required
+          >
+            <option value="">Select Wallet</option>
+            {wallets.map(wallet => (
+              <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
+            ))}
+          </select>
+          <select 
+            value={form.category} 
+            onChange={e => setForm({ ...form, category: e.target.value })}
+          >
+            <option value="">Select Category</option>
+            {categories
+              .filter(c => c.type === 'EXPENSE')
+              .map(c => (
+                <option key={c.id} value={c.name}>{c.name}</option>
+              ))
+            }
+          </select>
+          <textarea 
+            placeholder="Add A Reference" 
+            value={form.note} 
+            onChange={e => setForm({ ...form, note: e.target.value })}
+          ></textarea>
+          <button onClick={handleSubmit}>+ Add Expense</button>
         </div>
 
         <div className="expense-chart">

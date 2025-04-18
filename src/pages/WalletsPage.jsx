@@ -20,6 +20,34 @@ export default function WalletsPage() {
     }
   };
 
+  const handleCreateWallet = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (!form.name || !form.type || !form.balance) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      const wallet = {
+        name: form.name,
+        type: form.type,
+        balance: parseFloat(form.balance)
+      };
+      
+      await axios.post('/wallets', wallet);
+      
+      // Reset form and refresh wallets
+      setForm({ name: '', type: '', balance: '' });
+      fetchWallets();
+      
+    } catch (error) {
+      console.error('Failed to create wallet:', error);
+      alert('Failed to create wallet');
+    }
+  };
+  
+
   useEffect(() => {
     fetchWallets();
   }, []);
@@ -44,7 +72,7 @@ export default function WalletsPage() {
           <option value="">Select Type</option>
           <option value="CASH">Cash</option>
           <option value="BANK">Bank</option>
-          <option value="CREDIT">Credit</option>
+          <option value="CREDIT_CARD">Credit</option>
           <option value="INVESTMENT">Investment</option>
           <option value="SAVINGS">Savings</option>
         </select>
@@ -54,7 +82,7 @@ export default function WalletsPage() {
           value={form.balance}
           onChange={(e) => setForm({ ...form, balance: e.target.value })}
         />
-        <button className="add-wallet-btn" disabled>+ Add Wallet</button>
+        <button className="add-wallet-btn" onClick={handleCreateWallet}>+ Add Wallet</button>
       </div>
 
       <div className="wallets-list">

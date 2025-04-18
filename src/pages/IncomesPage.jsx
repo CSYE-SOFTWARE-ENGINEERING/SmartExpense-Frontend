@@ -8,9 +8,44 @@ const COLORS = ['#4caf50', '#81c784', '#66bb6a', '#a5d6a7', '#2e7d32', '#c8e6c9'
 
 export default function IncomesPage() {
   const [incomes, setIncomes] = useState([]);
+  const [wallets, setWallets] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [total, setTotal] = useState(0);
   const [categoryData, setCategoryData] = useState([]);
-  const [form, setForm] = useState({ title: '', amount: '', date: '', category: '', note: '' });
+  const [form, setForm] = useState({ 
+    title: '', 
+    amount: '', 
+    date: '', 
+    category: '', 
+    note: '',
+    walletId: ''
+  });
+
+  useEffect(() => {
+    fetchIncomes();
+    fetchWallets();
+    fetchCategories();
+  }, []);
+
+  const fetchWallets = async () => {
+    try {
+      const res = await axios.get('/wallets');
+      setWallets(res.data || []);
+    } catch (error) {
+      console.error('Failed to fetch wallets:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('/categories');
+      // Filter only income categories
+      const incomeCategories = res.data?.filter(cat => cat.type === 'INCOME') || [];
+      setCategories(incomeCategories);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
 
   const fetchIncomes = async () => {
     try {
@@ -41,9 +76,52 @@ export default function IncomesPage() {
     }
   };
 
-  useEffect(() => {
-    fetchIncomes();
-  }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      if (!form.title || !form.amount || !form.date || !form.walletId) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
+      // Get category ID from selection
+      let categoryId = null;
+      if (form.category) {
+        const selectedCategory = categories.find(c => c.name === form.category);
+        if (selectedCategory) {
+          categoryId = selectedCategory.id;
+        }
+      }
+      
+      const incomeData = {
+        amount: parseFloat(form.amount),
+        description: form.title,
+        date: form.date,
+        type: 'INCOME',
+        walletId: form.walletId,
+        categoryId: categoryId
+      };
+      
+      await axios.post('/transactions', incomeData);
+      
+      // Reset form and refresh
+      setForm({ 
+        title: '', 
+        amount: '', 
+        date: '', 
+        category: '', 
+        note: '',
+        walletId: '' 
+      });
+      
+      fetchIncomes();
+      
+    } catch (error) {
+      console.error('Error adding income:', error);
+      alert('Failed to add income. Please try again.');
+    }
+  };
 
   return (
     <div className="incomes-page">
@@ -53,12 +131,54 @@ export default function IncomesPage() {
 
       <div className="income-chart-form-wrapper">
         <div className="income-form">
-          <input type="text" placeholder="Income Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
-          <input type="number" placeholder="Income Amount" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} />
-          <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
-          <input type="text" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
-          <textarea placeholder="Add A Reference" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })}></textarea>
-          <button disabled>+ Add Income</button>
+          <input 
+            type="text" 
+            placeholder="Income Title" 
+            value={form.title} 
+            onChange={e => setForm({ ...form, title: e.target.value })} 
+            required
+          />
+          <input 
+            type="number" 
+            placeholder="Income Amount" 
+            value={form.amount} 
+            onChange={e => setForm({ ...form, amount: e.target.value })} 
+            required
+          />
+          <input 
+            type="date" 
+            value={form.date} 
+            onChange={e => setForm({ ...form, date: e.target.value })} 
+            required
+          />
+          <select 
+            value={form.walletId} 
+            onChange={e => setForm({ ...form, walletId: e.target.value })} 
+            required
+          >
+            <option value="">Select Wallet</option>
+            {wallets.map(wallet => (
+              <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
+            ))}
+          </select>
+          <select 
+            value={form.category} 
+            onChange={e => setForm({ ...form, category: e.target.value })}
+          >
+            <option value="">Select Category</option>
+            {categories
+              .filter(c => c.type === 'INCOME')
+              .map(c => (
+                <option key={c.id} value={c.name}>{c.name}</option>
+              ))
+            }
+          </select>
+          <textarea 
+            placeholder="Add A Reference" 
+            value={form.note} 
+            onChange={e => setForm({ ...form, note: e.target.value })}
+          ></textarea>
+          <button onClick={handleSubmit}>+ Add Income</button>
         </div>
 
         <div className="income-chart">
@@ -94,5 +214,4 @@ export default function IncomesPage() {
         )}
       </div>
     </div>
-  );
-}
+  )};

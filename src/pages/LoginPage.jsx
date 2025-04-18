@@ -1,6 +1,6 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -8,9 +8,12 @@ const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMsg('');
 
     try {
       const res = await fetch('http://localhost:8085/api/auth/login', {
@@ -24,10 +27,21 @@ const LoginPage = () => {
 
       if (res.ok) {
         if (data.token) {
-          // ✅ 保存 token，axios 会自动带上它
+          // Save token
           localStorage.setItem('token', data.token);
+          
+          // Store user data if available
+          if (data.user) {
+            localStorage.setItem('userData', JSON.stringify({
+              username: data.user.username || '',
+              firstName: data.user.firstName || '',
+              lastName: data.user.lastName || ''
+            }));
+            
+            console.log('User data saved:', data.user);
+          }
 
-          // ✅ 跳转到 dashboard
+          // Redirect to dashboard
           navigate('/dashboard');
         } else {
           setErrorMsg('Login succeeded but token missing');
@@ -38,6 +52,8 @@ const LoginPage = () => {
     } catch (err) {
       console.error('Login error:', err);
       setErrorMsg('Network error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -46,21 +62,32 @@ const LoginPage = () => {
       <form className="login-card" onSubmit={handleLogin}>
         <h2>Login to SmartExpense</h2>
         {errorMsg && <p className="error">{errorMsg}</p>}
+        
         <label>Username</label>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          disabled={isSubmitting}
           required
         />
+        
         <label>Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={isSubmitting}
           required
         />
-        <button type="submit">Login</button>
+        
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Logging in...' : 'Login'}
+        </button>
+        
+        <div className="register-link">
+          Don't have an account? <Link to="/register">Register now</Link>
+        </div>
       </form>
     </div>
   );

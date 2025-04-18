@@ -43,6 +43,11 @@
   outline: none;
 }
 
+.login-card input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
 .login-card button {
   margin-top: 1rem;
   padding: 10px;
@@ -55,12 +60,34 @@
   transition: background-color 0.2s;
 }
 
-.login-card button:hover {
+.login-card button:hover:not(:disabled) {
   background-color: #1565c0;
+}
+
+.login-card button:disabled {
+  background-color: #90caf9;
+  cursor: not-allowed;
 }
 
 .error {
   color: red;
   font-size: 0.9rem;
   text-align: center;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.register-link a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
 }

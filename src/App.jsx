@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import TransactionsPage from './pages/TransactionsPage';
 import IncomesPage from './pages/IncomesPage';
 import ExpensesPage from './pages/ExpensesPage';
@@ -20,6 +21,10 @@ export default function App() {
         <Route
           path="/login"
           element={<LoginPage />}
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage />}
         />
         <Route
           path="/*"

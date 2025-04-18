@@ -40,8 +40,11 @@
     border: none;
     border-radius: 6px;
     font-size: 1rem;
-    cursor: not-allowed;
-    opacity: 0.6;
+    cursor: pointer;
+  }
+  
+  .add-wallet-btn:hover {
+    background-color: #1976d2;
   }
   
   .wallets-list {
