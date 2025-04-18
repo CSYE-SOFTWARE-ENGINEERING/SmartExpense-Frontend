@@ -1,20 +1,16 @@
 import axios from 'axios';
 
-// const isLocalhost = window.location.hostname === 'localhost';
-
-// const BASE_URL = isLocalhost
-//   ? 'http://localhost:5000'   // 本地开发
-//   //: 'http://backend:5000';    // Docker 容器内通信
-//   : 'http://47.89.164.212:5000';    // Docker 容器内通信
-
-
 const { hostname, protocol } = window.location;
-
 const isLocalhost = hostname === 'localhost';
 
+// const BASE_URL = isLocalhost
+//   ? 'http://localhost:5000'
+//   : `${protocol}//${hostname}:5000`;
 const BASE_URL = isLocalhost
-  ? 'http://localhost:5000'
-  : `${protocol}//${hostname}:5000`; // 自动取公网 IP 或域名
+  ? 'http://localhost:5000/api/v1'
+  : `${protocol}//${hostname}:5000/api/v1`;
+
+
 
 
 const axiosClient = axios.create({
@@ -22,6 +18,15 @@ const axiosClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default axiosClient;
