@@ -8,6 +8,7 @@ import IncomesPage from './pages/IncomesPage';
 import ExpensesPage from './pages/ExpensesPage';
 import BudgetsPage from './pages/BudgetsPage';
 import WalletsPage from './pages/WalletsPage';
+import Register from './Register'; // <-- this is your new Register page
 
 function PrivateRoute({ children }) {
   const isLoggedIn = !!localStorage.getItem('token');
@@ -18,10 +19,8 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} /> {/* ✅ Add this line */}
         <Route
           path="/register"
           element={<RegisterPage />}
