@@ -8,6 +8,7 @@ import IncomesPage from './pages/IncomesPage';
 import ExpensesPage from './pages/ExpensesPage';
 import BudgetsPage from './pages/BudgetsPage';
 import WalletsPage from './pages/WalletsPage';
+import './App.css'; // Make sure to create this file
 
 function PrivateRoute({ children }) {
   const isLoggedIn = !!localStorage.getItem('token');
@@ -30,18 +31,20 @@ export default function App() {
           path="/*"
           element={
             <PrivateRoute>
-              <div style={{ display: 'flex' }}>
+              <div className="app-container">
                 <Sidebar />
-                <Routes>
-                  <Route path="/" element={<Navigate to="/dashboard" />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/transactions" element={<TransactionsPage />} />
-                  <Route path="/incomes" element={<IncomesPage />} />
-                  <Route path="/expenses" element={<ExpensesPage />} />
-                  <Route path="/budgets" element={<BudgetsPage />} />
-                  <Route path="/wallets" element={<WalletsPage />} />
-                  <Route path="*" element={<Navigate to="/dashboard" />} />
-                </Routes>
+                <div className="content-container">
+                  <Routes>
+                    <Route path="/" element={<Navigate to="/dashboard" />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/transactions" element={<TransactionsPage />} />
+                    <Route path="/incomes" element={<IncomesPage />} />
+                    <Route path="/expenses" element={<ExpensesPage />} />
+                    <Route path="/budgets" element={<BudgetsPage />} />
+                    <Route path="/wallets" element={<WalletsPage />} />
+                    <Route path="*" element={<Navigate to="/dashboard" />} />
+                  </Routes>
+                </div>
               </div>
             </PrivateRoute>
           }
