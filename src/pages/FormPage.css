@@ -83,3 +83,67 @@
   color: #444;
   font-size: 14px;
 }
+
+.form-section input,
+.form-section textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+  border-color: #4a6fa5;
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.15);
+  outline: none;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.item-card {
+  animation: fadeInUp 0.3s ease-in-out;
+}
+
+.item-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .expense-content {
+    flex-direction: column;
+  }
+
+  .form-section,
+  .record-section {
+    width: 100%;
+  }
+
+  .page-title {
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
+.item-card .record-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #2d4059;
+}
+
+.item-card .record-meta {
+  font-size: 13px;
+  color: #777;
+}
+

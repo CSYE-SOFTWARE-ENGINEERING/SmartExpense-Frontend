@@ -97,3 +97,74 @@
   font-size: 0.95rem;
   color: #666;
 }
+
+.incomes-page {
+  margin: 1rem 1rem 0 240px; /* Added proper spacing */
+}
+
+.income-form input,
+.income-form select,
+.income-form textarea,
+.income-form button {
+  transition: all 0.2s ease-in-out;
+}
+
+.income-form input:focus,
+.income-form select:focus,
+.income-form textarea:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+  outline: none;
+}
+
+.income-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.income-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.income-card {
+  animation: fadeInSlideUp 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .incomes-page {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .income-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .income-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .income-chart {
+    width: 100%;
+  }
+}
+
+.income-meta {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}

@@ -144,3 +144,66 @@
       padding: 1.5rem;
     }
   }
+
+  input,
+.register-btn {
+  transition: all 0.3s ease-in-out;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-card {
+  animation: fadeInSlide 0.4s ease-in-out;
+}
+
+@media (max-width: 480px) {
+  .register-card h2 {
+    font-size: 1.5rem;
+  }
+
+  label {
+    font-size: 0.9rem;
+  }
+
+  input,
+  .register-btn {
+    font-size: 0.95rem;
+    padding: 0.75rem;
+  }
+
+  .login-link {
+    font-size: 0.85rem;
+  }
+}
+
+input:focus-visible {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.register-btn:disabled {
+  background-color: #90caf9;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.register-btn.loading::after {
+  content: "⏳";
+  margin-left: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+

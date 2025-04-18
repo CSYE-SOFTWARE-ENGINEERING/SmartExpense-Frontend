@@ -91,3 +91,61 @@
 .register-link a:hover {
   text-decoration: underline;
 }
+
+.login-card input,
+.login-card button {
+  transition: all 0.3s ease-in-out;
+}
+
+.login-card input:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-card {
+  animation: fadeSlideIn 0.4s ease-in-out;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .login-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .login-card input,
+  .login-card button {
+    font-size: 0.95rem;
+  }
+
+  .register-link {
+    font-size: 0.85rem;
+  }
+}
+
+.login-wrapper {
+  background: linear-gradient(-45deg, #e0f2f1, #e3f2fd, #fce4ec, #f3e5f5);
+  background-size: 400% 400%;
+  animation: gradientMove 10s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
