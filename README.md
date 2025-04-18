@@ -42,7 +42,7 @@ Then visit: http://localhost:5173
 🔌 Backend Integration
 Ensure the backend server is running (Django API):
 
-Base URL: http://localhost:8080/api
+Base URL: http://localhost:8085/api
 
 Endpoints used:
 
