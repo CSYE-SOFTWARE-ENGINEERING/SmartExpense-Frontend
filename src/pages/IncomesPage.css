@@ -1,79 +1,99 @@
 .incomes-page {
-    padding: 30px;
-  }
-  
-  .page-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #2d4059;
-  }
-  
-  .incomes-content {
-    display: flex;
-    gap: 30px;
-    align-items: flex-start;
-  }
-  
-  .incomes-form-section {
-    flex: 1;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-  }
-  
-  .incomes-form-section input,
-  .incomes-form-section textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-  
-  .incomes-form-section button {
-    background: #4a6fa5;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  
-  .incomes-form-section button:hover {
-    background: #3c5c85;
-  }
-  
-  .incomes-record-section {
-    flex: 2;
-    background: #f7fafd;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    min-height: 300px;
-  }
-  
-  .empty-note {
-    font-style: italic;
-    color: #888;
-  }
-  
-  .item-card {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.04);
-  }
-  
-  .note-text {
-    margin-top: 4px;
-    color: #444;
-    font-size: 14px;
-  }
-  
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 1rem 1 0 240px; /* push right to leave space for sidebar */
+}
+
+.income-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.income-total {
+  color: green;
+  font-weight: bold;
+}
+
+.income-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.income-form input,
+.income-form select,
+.income-form textarea {
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 160px;
+}
+
+.income-form textarea {
+  resize: none;
+  height: 40px;
+}
+
+.income-form button {
+  padding: 0.6rem 1.2rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.income-form button:hover {
+  background-color: #388e3c;
+}
+
+.income-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.income-chart-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 3rem;
+}
+
+.income-chart {
+  width: 340px;
+}
+
+.incomes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.income-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.2rem 1.5rem;
+}
+
+.income-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.income-amount {
+  font-weight: bold;
+  color: green;
+}
+
+.income-meta {
+  font-size: 0.95rem;
+  color: #666;
+}

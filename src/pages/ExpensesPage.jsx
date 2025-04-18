@@ -1,74 +1,96 @@
 import React, { useEffect, useState } from 'react';
-import './FormPage.css';
-import axios from 'axios';
+import './ExpensesPage.css';
+import axios from '../utils/axiosInstance';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+
+const COLORS = ['#e53935', '#ef5350', '#f44336', '#ffcdd2', '#b71c1c', '#ff8a80'];
 
 export default function ExpensesPage() {
-  const [form, setForm] = useState({
-    title: '',
-    amount: '',
-    date: '',
-    category: '',
-    description: '',
-  });
-
   const [expenses, setExpenses] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+  const [form, setForm] = useState({ title: '', amount: '', date: '', category: '', note: '' });
 
   const fetchExpenses = async () => {
-    const res = await axios.get('http://localhost:8080/api/expense');
-    setExpenses(res.data);
+    try {
+      const walletRes = await axios.get('/wallets');
+      const wallets = walletRes.data || [];
+      let allTx = [];
+
+      for (const wallet of wallets) {
+        const txRes = await axios.get(`/transactions/wallet/${wallet.id}`);
+        const txs = txRes.data || [];
+        allTx.push(...txs);
+      }
+
+      const expenseTx = allTx.filter(tx => tx.type === 'EXPENSE');
+      setExpenses(expenseTx);
+      setTotal(expenseTx.reduce((sum, tx) => sum + (tx.amount || 0), 0));
+
+      const grouped = {};
+      expenseTx.forEach(tx => {
+        const category = tx.categoryName || 'Uncategorized';
+        if (!grouped[category]) grouped[category] = 0;
+        grouped[category] += tx.amount;
+      });
+      const categoryArray = Object.keys(grouped).map((key) => ({ name: key, value: grouped[key] }));
+      setCategoryData(categoryArray);
+    } catch (error) {
+      console.error('Failed to fetch expense data:', error);
+    }
   };
 
   useEffect(() => {
     fetchExpenses();
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleAdd = async () => {
-    await axios.post('http://localhost:8080/api/expense', form);
-    fetchExpenses();
-    setForm({ title: '', amount: '', date: '', category: '', description: '' });
-  };
-
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8080/api/expense/${id}`);
-    fetchExpenses();
-  };
-
   return (
-    <div className="expense-page">
-      {/* 顶部标题 */}
-      <h1 className="page-title">Total Expense: ${expenses.reduce((sum, i) => sum + i.amount, 0)}</h1>
+    <div className="expenses-page">
+      <h1 className="expense-title">
+        Total Expense: <span className="expense-total">${total}</span>
+      </h1>
 
-      <div className="expense-content">
-        {/* 左边添加表单 */}
-        <div className="form-section">
-          <input name="title" value={form.title} onChange={handleChange} placeholder="Expense Title" />
-          <input name="amount" value={form.amount} onChange={handleChange} placeholder="Expense Amount" />
-          <input name="date" type="date" value={form.date} onChange={handleChange} />
-          <input name="category" value={form.category} onChange={handleChange} placeholder="Category" />
-          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Add A Reference" />
-          <button onClick={handleAdd}>+ Add Expense</button>
+      <div className="expense-chart-form-wrapper">
+        <div className="expense-form">
+          <input type="text" placeholder="Expense Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
+          <input type="number" placeholder="Expense Amount" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} />
+          <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
+          <input type="text" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+          <textarea placeholder="Add A Reference" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })}></textarea>
+          <button disabled>+ Add Expense</button>
         </div>
 
-        {/* 右边笔记风卡片列表 */}
-        <div className="record-section">
-          {expenses.length === 0 ? (
-            <p className="empty-note">No expense records yet.</p>
-          ) : (
-            expenses.map((item) => (
-              <div className="item-card" key={item.id}>
-                <div>
-                  <b>{item.title}</b> | ${item.amount} | {item.date}
-                  <div className="note-text">{item.description}</div>
-                </div>
-                <button onClick={() => handleDelete(item.id)}>🗑️</button>
+        <div className="expense-chart">
+          <h3>Expense by Category</h3>
+          <PieChart width={300} height={250}>
+            <Pie data={categoryData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+              {categoryData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </div>
+      </div>
+
+      <div className="expenses-section">
+        {expenses.length === 0 ? (
+          <p className="empty-note">No expense records yet.</p>
+        ) : (
+          expenses.map((tx) => (
+            <div className="expense-card" key={tx.id}>
+              <div className="expense-main">
+                <span className="expense-title"><strong>{tx.description}</strong></span>
+                <span className="expense-amount">– ${tx.amount}</span>
+                <span className="expense-date">{tx.date?.split('T')[0]}</span>
               </div>
-            ))
-          )}
-        </div>
+              <div className="expense-meta">
+                Wallet: {tx.walletName} | Category: {tx.categoryName || 'N/A'}
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

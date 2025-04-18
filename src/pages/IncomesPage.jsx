@@ -1,71 +1,97 @@
+// IncomesPage.jsx
 import React, { useEffect, useState } from 'react';
 import './IncomesPage.css';
-import axios from 'axios';
+import axios from '../utils/axiosInstance';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+
+const COLORS = ['#4caf50', '#81c784', '#66bb6a', '#a5d6a7', '#2e7d32', '#c8e6c9'];
 
 export default function IncomesPage() {
-  const [form, setForm] = useState({
-    title: '',
-    amount: '',
-    date: '',
-    category: '',
-    description: '',
-  });
-
   const [incomes, setIncomes] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+  const [form, setForm] = useState({ title: '', amount: '', date: '', category: '', note: '' });
 
   const fetchIncomes = async () => {
-    const res = await axios.get('http://localhost:8080/api/income');
-    setIncomes(res.data);
+    try {
+      const walletRes = await axios.get('/wallets');
+      const wallets = walletRes.data || [];
+      let allTx = [];
+
+      for (const wallet of wallets) {
+        const txRes = await axios.get(`/transactions/wallet/${wallet.id}`);
+        const txs = txRes.data || [];
+        allTx.push(...txs);
+      }
+
+      const incomeTx = allTx.filter(tx => tx.type === 'INCOME');
+      setIncomes(incomeTx);
+      setTotal(incomeTx.reduce((sum, tx) => sum + (tx.amount || 0), 0));
+
+      const grouped = {};
+      incomeTx.forEach(tx => {
+        const category = tx.categoryName || 'Uncategorized';
+        if (!grouped[category]) grouped[category] = 0;
+        grouped[category] += tx.amount;
+      });
+      const categoryArray = Object.keys(grouped).map((key) => ({ name: key, value: grouped[key] }));
+      setCategoryData(categoryArray);
+    } catch (error) {
+      console.error('Failed to fetch income data:', error);
+    }
   };
 
   useEffect(() => {
     fetchIncomes();
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleAdd = async () => {
-    await axios.post('http://localhost:8080/api/income', form);
-    fetchIncomes();
-    setForm({ title: '', amount: '', date: '', category: '', description: '' });
-  };
-
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:8080/api/income/${id}`);
-    fetchIncomes();
-  };
-
   return (
     <div className="incomes-page">
-      <h1 className="page-title">Total Income: ${incomes.reduce((sum, i) => sum + i.amount, 0)}</h1>
+      <h1 className="income-title">
+        Total Income: <span className="income-total">${total}</span>
+      </h1>
 
-      <div className="incomes-content">
-        <div className="incomes-form-section">
-          <input name="title" value={form.title} onChange={handleChange} placeholder="Income Title" />
-          <input name="amount" value={form.amount} onChange={handleChange} placeholder="Income Amount" />
-          <input name="date" type="date" value={form.date} onChange={handleChange} />
-          <input name="category" value={form.category} onChange={handleChange} placeholder="Category" />
-          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Add A Reference" />
-          <button onClick={handleAdd}>+ Add Income</button>
+      <div className="income-chart-form-wrapper">
+        <div className="income-form">
+          <input type="text" placeholder="Income Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
+          <input type="number" placeholder="Income Amount" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} />
+          <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
+          <input type="text" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+          <textarea placeholder="Add A Reference" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })}></textarea>
+          <button disabled>+ Add Income</button>
         </div>
 
-        <div className="incomes-record-section">
-          {incomes.length === 0 ? (
-            <p className="empty-note">No income records yet.</p>
-          ) : (
-            incomes.map((item) => (
-              <div className="item-card" key={item.id}>
-                <div>
-                  <b>{item.title}</b> | ${item.amount} | {item.date}
-                  <div className="note-text">{item.description}</div>
-                </div>
-                <button onClick={() => handleDelete(item.id)}>🗑️</button>
+        <div className="income-chart">
+          <h3>Income by Category</h3>
+          <PieChart width={300} height={250}>
+            <Pie data={categoryData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+              {categoryData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </div>
+      </div>
+
+      <div className="incomes-section">
+        {incomes.length === 0 ? (
+          <p className="empty-note">No income records yet.</p>
+        ) : (
+          incomes.map((tx) => (
+            <div className="income-card" key={tx.id}>
+              <div className="income-main">
+                <span className="income-title"><strong>{tx.description}</strong></span>
+                <span className="income-amount">+ ${tx.amount}</span>
+                <span className="income-date">{tx.date?.split('T')[0]}</span>
               </div>
-            ))
-          )}
-        </div>
+              <div className="income-meta">
+                Wallet: {tx.walletName} | Category: {tx.categoryName || 'N/A'}
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

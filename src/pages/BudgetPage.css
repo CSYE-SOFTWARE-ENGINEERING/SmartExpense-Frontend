@@ -1,0 +1,59 @@
+.budget-page {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 1rem auto 2rem 240px;
+  }
+  
+  .budget-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .total-budget {
+    color: #1976d2;
+    font-weight: bold;
+  }
+  
+  .budget-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .budget-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 1.2rem 1.5rem;
+  }
+  
+  .budget-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .budget-meta {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 0.4rem;
+  }
+  
+  .budget-bar {
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    height: 10px;
+    overflow: hidden;
+  }
+  
+  .budget-bar-fill {
+    height: 100%;
+    background-color: #f44336;
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+    border-radius: 8px;
+  }
+  

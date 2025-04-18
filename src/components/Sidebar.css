@@ -26,8 +26,19 @@ nav ul li a {
   color: #fff;
   text-decoration: none;
 }
+
 .signout {
-  margin-top: auto;
-  color: #ccc;
+  margin-top: 2rem;
+  padding: 0.5rem;
+  text-align: center;
   cursor: pointer;
+  background-color: #aeabab;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.signout:hover {
+  background-color: #ffdddd;
+  color: #c00;
 }
