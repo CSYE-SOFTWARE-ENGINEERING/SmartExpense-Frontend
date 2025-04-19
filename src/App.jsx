@@ -9,6 +9,7 @@ import ExpensesPage from './pages/ExpensesPage';
 import BudgetsPage from './pages/BudgetsPage';
 import WalletsPage from './pages/WalletsPage';
 import AiInsightsPage from './pages/AiInsightsPage';
+import ChatbotButton from './components/ChatbotButton';
 import './App.css'; // Make sure to create this file
 
 function PrivateRoute({ children }) {
@@ -17,8 +18,13 @@ function PrivateRoute({ children }) {
 }
 
 export default function App() {
+  const chatbotLink = "https://reimagined-goggles-g4qvqpq677xxf7pq-8501.app.github.dev/";
+
   return (
     <Router>
+
+      <ChatbotButton chatbotLink={chatbotLink} />
+
       <Routes>
         <Route
           path="/login"

@@ -264,7 +264,7 @@ export default function AiInsightsPage() {
   if (loading) {
     return (
       <div className="insights-page">
-        <h1 className="insights-title">AI Insights</h1>
+        <h1 className="insights-title">Financial Insights</h1>
         <div className="insights-loading">Loading financial insights...</div>
       </div>
     );
@@ -272,7 +272,7 @@ export default function AiInsightsPage() {
 
   return (
     <div className="insights-page">
-      <h1 className="insights-title">AI Insights</h1>
+      <h1 className="insights-title">Financial Insights</h1>
       
       <div className="insights-summary">
         <div className="insight-metric">
