@@ -19,10 +19,8 @@ jobs:
 
       - name: Install deps
         run: npm ci
-        working-directory: ./frontend
 
       - name: Lint & Build
         run: |
-          npm run lint || echo "Lint errors, ignoring for now"
+          npm run lint || echo "Lint errors"
           npm run build
-        working-directory: ./frontend
