@@ -1,0 +1,35 @@
+name: CD - Build Frontend Image with Packer
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-packer-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@v3
+        with:
+          version: latest
+
+      - name: Run Packer
+        run: |
+          cd frontend/packer
+          packer init .
+          packer build frontend.pkr.hcl
