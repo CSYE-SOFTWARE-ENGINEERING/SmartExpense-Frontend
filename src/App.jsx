@@ -8,6 +8,7 @@ import IncomesPage from './pages/IncomesPage';
 import ExpensesPage from './pages/ExpensesPage';
 import BudgetsPage from './pages/BudgetsPage';
 import WalletsPage from './pages/WalletsPage';
+import AiInsightsPage from './pages/AiInsightsPage';
 import './App.css'; // Make sure to create this file
 
 function PrivateRoute({ children }) {
@@ -42,6 +43,7 @@ export default function App() {
                     <Route path="/expenses" element={<ExpensesPage />} />
                     <Route path="/budgets" element={<BudgetsPage />} />
                     <Route path="/wallets" element={<WalletsPage />} />
+                    <Route path="/insights" element={<AiInsightsPage />} />
                     <Route path="*" element={<Navigate to="/dashboard" />} />
                   </Routes>
                 </div>

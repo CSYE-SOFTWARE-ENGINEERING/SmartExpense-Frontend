@@ -97,6 +97,7 @@ export default function Sidebar() {
           <li><Link to="/expenses">💸 Expenses</Link></li>
           <li><Link to="/budgets">📈 Budgets</Link></li>
           <li><Link to="/wallets">👛 Wallets</Link></li>
+          <li><Link to="/insights">🤖 Financial Insights</Link></li>
         </ul>
       </nav>
       <div className="signout" onClick={handleLogout} style={{ cursor: 'pointer', marginTop: '2rem', color: '#ff4d4f' }}>
